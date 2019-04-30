@@ -1,25 +1,49 @@
 package Exe2Ver1;
 
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Random;
 
 public class Main {
 
+    public static void randomize(String fileName, int n) throws IOException {
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("resources\\" + fileName));
+        Random random = new Random();
+        for (int i = 0; i < n; i++) {
+            bufferedWriter.write(String.valueOf(random.nextDouble()));
+            bufferedWriter.write("\n");
+        }
+        bufferedWriter.close();
+    }
+
+    public static double[] randomize(int n) {
+        double[] data = new double[n];
+        for (int i=0;i<n;++i)
+            data[i] = Math.random();
+        return data;
+    }
+
+    private static double func(double x){
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return x+1;
+    }
 
     public static void main(String[] args) throws IOException {
-        process(5, "Numbers.txt");
-
+        //randomize("Numbers.txt", 100);
+        Numbers numbers = new Numbers();
+        double[] data = randomize(100);
+        long t = System.currentTimeMillis();
+        double[] results = numbers.compute(Main::func, data, 5);
+        System.out.println(System.currentTimeMillis()-t);
     }
 
-    //wpisuje ile watkow (n)
-    public static void process(int n, String filename) throws IOException {
-        Numbers numbers = new Numbers(1000000);
-        numbers.readNumbers(filename);
-        numbers.randomize("numbers.txt");
-        numbers.splitArray(n);
 
-
-    }
 }
 
 
